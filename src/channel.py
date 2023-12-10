@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 class Channel:
     """Класс для ютуб-канала"""
 
-    api_key = os.getenv("YT_API_KEY")
+    api_key = "AIzaSyCN7BT8XlSAdIBsCM4FqxqwgfX87CGaH-g"
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
@@ -17,9 +17,32 @@ class Channel:
         self.description = self.channel_info['items'][0]['snippet']['description']
         self.url = "https://www.youtube.com/channel/" + self.channel_info["items"][0]["id"]
         self.video_count = self.channel_info['items'][0]['statistics']['videoCount']
-        self.subscriber_count = self.channel_info['items'][0]['statistics']['subscriberCount']
+        self.subscriber_count = int(self.channel_info['items'][0]['statistics']['subscriberCount'])
         self.view_count = self.channel_info['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        return self.subscriber_count + other.subscriber_count
+
+    def __sub__(self, other):
+        return self.subscriber_count - other.subscriber_count
+
+    def __lt__(self, other):
+        return self.subscriber_count < other.subscriber_count
+
+    def __le__(self, other):
+        return self.subscriber_count <= other.subscriber_count
+
+    def __gt__(self, other):
+        return self.subscriber_count > other.subscriber_count
+
+    def __ge__(self, other):
+        return self.subscriber_count >= other.subscriber_count
+
+    def __eq__(self, other):
+        return self.subscriber_count == other.subscriber_count
 
     @property
     def channel_id(self):
